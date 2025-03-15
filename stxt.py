@@ -8,11 +8,12 @@ import sys
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
 # Setup variables
-name = "x-text"
+name = "Simple-TXT"
 default_file_name = "new file"
 current_file_path = default_file_name
 file_types = [("Text Files", "*.txt"), ("Markdown", "*.md")]
 current_theme = "light"
+current_language = "en"  # Початкова мова - англійська
 
 # Initialize tkinter
 root = Tk()
@@ -55,6 +56,44 @@ themes = {
     }
 }
 
+# Define translations
+translations = {
+    "en": {
+        "file": "File",
+        "new": "New",
+        "open": "Open",
+        "save": "Save",
+        "save_as": "Save As",
+        "themes": "Themes",
+        "light_theme": "Light Theme",
+        "dark_theme": "Dark Theme",
+        "orange_theme": "Orange Theme",
+        "red_theme": "Red Theme",
+        "blue_theme": "Blue Theme",
+        "green_theme": "Green Theme",
+        "language": "Language",
+        "english": "English",
+        "ukrainian": "Ukrainian"
+    },
+    "uk": {
+        "file": "Файл",
+        "new": "Новий",
+        "open": "Відкрити",
+        "save": "Зберегти",
+        "save_as": "Зберегти як",
+        "themes": "Теми",
+        "light_theme": "Світла тема",
+        "dark_theme": "Темна тема",
+        "orange_theme": "Помаранчева тема",
+        "red_theme": "Червона тема",
+        "blue_theme": "Синя тема",
+        "green_theme": "Зелена тема",
+        "language": "Мова",
+        "english": "Англійська",
+        "ukrainian": "Українська"
+    }
+}
+
 def apply_theme(theme_name):
     global current_theme
     if theme_name in themes:
@@ -62,6 +101,47 @@ def apply_theme(theme_name):
         txt.config(bg=theme["bg"], fg=theme["fg"], insertbackground=theme["insertbackground"])
         root.config(bg=theme["bg"])
         current_theme = theme_name
+
+def change_language(lang):
+    global current_language
+    if lang in translations:
+        current_language = lang
+        rebuild_menu()  # Перебудувати меню при зміні мови
+
+def rebuild_menu():
+    # Видалити старі меню
+    root.config(menu=Menu(root))  # Очистити меню
+
+    # Створити нове меню
+    menu = Menu(root)
+
+    # File dropdown
+    file_dropdown = Menu(menu, tearoff=False)
+    file_dropdown.add_command(label=translations[current_language]["new"], command=lambda: file_action("new"))
+    file_dropdown.add_command(label=translations[current_language]["open"], command=lambda: file_action("open"))
+    file_dropdown.add_separator()
+    file_dropdown.add_command(label=translations[current_language]["save"], command=lambda: file_action("save"))
+    file_dropdown.add_command(label=translations[current_language]["save_as"], command=lambda: file_action("saveAs"))
+    menu.add_cascade(label=translations[current_language]["file"], menu=file_dropdown)
+
+    # Themes dropdown
+    theme_dropdown = Menu(menu, tearoff=False)
+    theme_dropdown.add_command(label=translations[current_language]["light_theme"], command=lambda: apply_theme("light"))
+    theme_dropdown.add_command(label=translations[current_language]["dark_theme"], command=lambda: apply_theme("dark"))
+    theme_dropdown.add_command(label=translations[current_language]["orange_theme"], command=lambda: apply_theme("orange"))
+    theme_dropdown.add_command(label=translations[current_language]["red_theme"], command=lambda: apply_theme("red"))
+    theme_dropdown.add_command(label=translations[current_language]["blue_theme"], command=lambda: apply_theme("blue"))
+    theme_dropdown.add_command(label=translations[current_language]["green_theme"], command=lambda: apply_theme("green"))
+    menu.add_cascade(label=translations[current_language]["themes"], menu=theme_dropdown)
+
+    # Language dropdown
+    language_dropdown = Menu(menu, tearoff=False)
+    language_dropdown.add_command(label=translations[current_language]["english"], command=lambda: change_language("en"))
+    language_dropdown.add_command(label=translations[current_language]["ukrainian"], command=lambda: change_language("uk"))
+    menu.add_cascade(label=translations[current_language]["language"], menu=language_dropdown)
+
+    # Встановити нове меню
+    root.config(menu=menu)
 
 # Define handler functions
 def file_action(action):
@@ -104,27 +184,8 @@ txt.bind('<KeyPress>', on_text_change)
 # Apply default theme
 apply_theme(current_theme)
 
-# Menu setup
-menu = Menu(root)
-
-file_dropdown = Menu(menu, tearoff=False)
-file_dropdown.add_command(label="New", command=lambda: file_action("new"))
-file_dropdown.add_command(label="Open", command=lambda: file_action("open"))
-file_dropdown.add_separator()
-file_dropdown.add_command(label="Save", command=lambda: file_action("save"))
-file_dropdown.add_command(label="Save As", command=lambda: file_action("saveAs"))
-menu.add_cascade(label="File", menu=file_dropdown)
-
-theme_dropdown = Menu(menu, tearoff=False)
-theme_dropdown.add_command(label="Light Theme", command=lambda: apply_theme("light"))
-theme_dropdown.add_command(label="Dark Theme", command=lambda: apply_theme("dark"))
-theme_dropdown.add_command(label="Orange Theme", command=lambda: apply_theme("orange"))
-theme_dropdown.add_command(label="Red Theme", command=lambda: apply_theme("red"))
-theme_dropdown.add_command(label="Blue Theme", command=lambda: apply_theme("blue"))
-theme_dropdown.add_command(label="Green Theme", command=lambda: apply_theme("green"))
-menu.add_cascade(label="Themes", menu=theme_dropdown)
-
-root.config(menu=menu)
+# Initial menu setup
+rebuild_menu()
 
 # Load file from command-line argument if provided
 if len(sys.argv) == 2:
@@ -136,5 +197,3 @@ if len(sys.argv) == 2:
 
 # Main loop
 root.mainloop()
-
-
