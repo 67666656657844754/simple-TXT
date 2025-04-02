@@ -13,7 +13,7 @@ default_file_name = "new file"
 current_file_path = default_file_name
 file_types = [("Text Files", "*.txt"), ("Markdown", "*.md")]
 current_theme = "light"
-current_language = "en" English language 
+current_language = "en" #English language 
 
 # Initialize tkinter
 root = Tk()
