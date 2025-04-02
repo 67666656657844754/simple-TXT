@@ -13,7 +13,7 @@ default_file_name = "new file"
 current_file_path = default_file_name
 file_types = [("Text Files", "*.txt"), ("Markdown", "*.md")]
 current_theme = "light"
-current_language = "en"  # Початкова мова - англійська
+current_language = "en" English language 
 
 # Initialize tkinter
 root = Tk()
@@ -106,7 +106,7 @@ def change_language(lang):
     global current_language
     if lang in translations:
         current_language = lang
-        rebuild_menu()  # Перебудувати меню при зміні мови
+        rebuild_menu()  
 
 def rebuild_menu():
     # Видалити старі меню
