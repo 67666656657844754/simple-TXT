@@ -110,9 +110,9 @@ def change_language(lang):
 
 def rebuild_menu():
     # Видалити старі меню
-    root.config(menu=Menu(root))  # Очистити меню
+    root.config(menu=Menu(root))  
 
-    # Створити нове меню
+    # New menu 
     menu = Menu(root)
 
     # File dropdown
