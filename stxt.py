@@ -109,7 +109,7 @@ def change_language(lang):
         rebuild_menu()  
 
 def rebuild_menu():
-    # Видалити старі меню
+    # Delete old menu
     root.config(menu=Menu(root))  
 
     # New menu 
