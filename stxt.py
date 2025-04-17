@@ -140,7 +140,7 @@ def rebuild_menu():
     language_dropdown.add_command(label=translations[current_language]["ukrainian"], command=lambda: change_language("uk"))
     menu.add_cascade(label=translations[current_language]["language"], menu=language_dropdown)
 
-    # Встановити нове меню
+    # install new menu
     root.config(menu=menu)
 
 # Define handler functions
